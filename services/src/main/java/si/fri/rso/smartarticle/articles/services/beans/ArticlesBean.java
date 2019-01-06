@@ -37,7 +37,7 @@ public class ArticlesBean {
     private void init() {}
 
     @Inject
-    @DiscoverService("smartarticle-users")
+    @DiscoverService("smartarticle-articles")
     private Optional<String> baseUrl;
 
     public List<Article> getArticles() {
