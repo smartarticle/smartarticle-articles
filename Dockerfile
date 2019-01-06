@@ -6,6 +6,6 @@ WORKDIR /app
 
 ADD ./api/target/article-api-1.0.0-SNAPSHOT.jar /app
 
-EXPOSE 8081
+EXPOSE 8082
 
 CMD java -jar article-api-1.0.0-SNAPSHOT.jar
