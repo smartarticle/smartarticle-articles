@@ -28,7 +28,7 @@ public class ArticlesResource {
     @GET
     public Response getArticles() {
 
-        List<Article> articles = articlesBean.getArticles();
+        List<Article> articles = articlesBean.getArticles(uriInfo);
 
         return Response.ok(articles).build();
     }

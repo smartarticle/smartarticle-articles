@@ -40,10 +40,13 @@ public class ArticlesBean {
     @DiscoverService("smartarticle-articles")
     private Optional<String> baseUrl;
 
-    public List<Article> getArticles() {
+    public List<Article> getArticles(UriInfo uriInfo) {
         if (appProperties.isExternalServicesEnabled()) {
-            TypedQuery<Article> query = em.createNamedQuery("Article.getAll", Article.class);
-            return query.getResultList();
+
+            QueryParameters queryParameters = QueryParameters.query(uriInfo.getRequestUri().getQuery())
+                    .defaultOffset(0)
+                    .build();
+            return JPAUtils.queryEntities(em, Article.class, queryParameters);
         }
         return null;
     }
