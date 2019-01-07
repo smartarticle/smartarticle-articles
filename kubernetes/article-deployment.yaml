@@ -13,7 +13,7 @@ spec:
         app: article
     spec:
       containers:
-      - image: ajugo/smartarticle-articles:0.1
+      - image: ajugo/smartarticle-articles:0.2
         name: article
         imagePullPolicy: "Always"
         env:
@@ -26,7 +26,7 @@ spec:
         - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
           value: jdbc:postgresql://article-db:5432/article
         - name: KUMULUZEE_SERVER_BASEURL
-          value: http://35.240.79.227:8082
+          value: http://159.122.187.161:3046
         - name: KUMULUZEE_DATASOURCES0_USERNAME
           value: dbuser
         - name: KUMULUZEE_DATASOURCES0_PASSWORD
