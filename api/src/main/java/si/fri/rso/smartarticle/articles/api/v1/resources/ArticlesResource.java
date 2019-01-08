@@ -33,10 +33,11 @@ public class ArticlesResource {
     public Response getArticles() {
         if (appProperties.isArticleServicesEnabled()) {
             List<Article> articles = articlesBean.getArticles(uriInfo);
-
+            appProperties.setHealthy(true);
             return Response.ok(articles).build();
         }
         else{
+            appProperties.setHealthy(true);
             return Response.ok().build();
         }
     }
@@ -48,10 +49,11 @@ public class ArticlesResource {
             List<Article> articles;
 
             articles = articlesBean.getArticlesFilter(uriInfo);
-
+            appProperties.setHealthy(true);
             return Response.status(Response.Status.OK).entity(articles).build();
         }
         else{
+            appProperties.setHealthy(true);
             return Response.ok().build();
         }
     }
@@ -63,12 +65,14 @@ public class ArticlesResource {
             Article article = articlesBean.getArticle(articleId);
 
             if (article == null) {
+                appProperties.setHealthy(true);
                 return Response.status(Response.Status.NOT_FOUND).build();
             }
-
+            appProperties.setHealthy(true);
             return Response.status(Response.Status.OK).entity(article).build();
         }
         else{
+            appProperties.setHealthy(true);
             return Response.ok().build();
         }
     }

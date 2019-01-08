@@ -13,6 +13,10 @@ kumuluzee:
       username: dbuser
       password: postgres
       max-pool-size: 20
+  health:
+    checks:
+      data-source-health-check:
+        jndi-name: jdbc/ArticlesDS
   config:
     etcd:
       hosts: http://159.122.187.161:32428
@@ -22,3 +26,4 @@ kumuluzee:
 app-properties:
   article-services:
     enabled: true
+  healthy: true

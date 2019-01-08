@@ -27,6 +27,9 @@ public class ArticlesBean {
     @Inject
     private EntityManager em;
 
+    @Inject
+    private AppProperties appProperties;
+
 
     @PostConstruct
     private void init() {}
@@ -51,6 +54,7 @@ public class ArticlesBean {
         Article article = em.find(Article.class, articleId);
 
         if (article == null) {
+            appProperties.setHealthy(false);
             throw new NotFoundException();
         }
 
