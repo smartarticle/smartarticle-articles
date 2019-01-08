@@ -8,14 +8,14 @@ import javax.enterprise.context.ApplicationScoped;
 @ConfigBundle("app-properties")
 public class AppProperties {
 
-    @ConfigValue(value = "external-services.enabled", watch = true)
-    private boolean externalServicesEnabled;
+    @ConfigValue(value = "article-services.enabled", watch = true)
+    private boolean articleServicesEnabled;
 
-    public boolean isExternalServicesEnabled() {
-        return externalServicesEnabled;
+    public boolean isArticleServicesEnabled() {
+        return articleServicesEnabled;
     }
 
-    public void setExternalServicesEnabled(boolean externalServicesEnabled) {
-        this.externalServicesEnabled = externalServicesEnabled;
+    public void setArticleServicesEnabled(boolean articleServicesEnabled) {
+        this.articleServicesEnabled = articleServicesEnabled;
     }
 }

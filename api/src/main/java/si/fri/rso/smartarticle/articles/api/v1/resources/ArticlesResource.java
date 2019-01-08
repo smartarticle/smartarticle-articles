@@ -2,6 +2,7 @@ package si.fri.rso.smartarticle.articles.api.v1.resources;
 
 import si.fri.rso.smartarticle.articles.models.entities.Article;
 import si.fri.rso.smartarticle.articles.services.beans.ArticlesBean;
+import si.fri.rso.smartarticle.articles.services.configuration.AppProperties;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -25,35 +26,50 @@ public class ArticlesResource {
     @Context
     protected UriInfo uriInfo;
 
+    @Inject
+    private AppProperties appProperties;
+
     @GET
     public Response getArticles() {
+        if (appProperties.isArticleServicesEnabled()) {
+            List<Article> articles = articlesBean.getArticles(uriInfo);
 
-        List<Article> articles = articlesBean.getArticles(uriInfo);
-
-        return Response.ok(articles).build();
+            return Response.ok(articles).build();
+        }
+        else{
+            return Response.ok().build();
+        }
     }
 
     @GET
     @Path("/filtered")
     public Response getArticlesFiltered() {
+        if (appProperties.isArticleServicesEnabled()) {
+            List<Article> articles;
 
-        List<Article> articles;
+            articles = articlesBean.getArticlesFilter(uriInfo);
 
-        articles = articlesBean.getArticlesFilter(uriInfo);
-
-        return Response.status(Response.Status.OK).entity(articles).build();
+            return Response.status(Response.Status.OK).entity(articles).build();
+        }
+        else{
+            return Response.ok().build();
+        }
     }
 
     @GET
     @Path("/{articleId}")
     public Response getArticle(@PathParam("articleId") Integer articleId) {
+        if (appProperties.isArticleServicesEnabled()) {
+            Article article = articlesBean.getArticle(articleId);
 
-        Article article = articlesBean.getArticle(articleId);
+            if (article == null) {
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
 
-        if (article == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.OK).entity(article).build();
         }
-
-        return Response.status(Response.Status.OK).entity(article).build();
+        else{
+            return Response.ok().build();
+        }
     }
 }

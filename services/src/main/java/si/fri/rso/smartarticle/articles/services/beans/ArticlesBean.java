@@ -27,32 +27,19 @@ public class ArticlesBean {
     @Inject
     private EntityManager em;
 
-    @Inject
-    private AppProperties appProperties;
-
-    @Inject
-    private ArticlesBean articlesBean;
 
     @PostConstruct
     private void init() {}
 
-    @Inject
-    @DiscoverService("smartarticle-articles")
-    private Optional<String> baseUrl;
 
     public List<Article> getArticles(UriInfo uriInfo) {
-        if (appProperties.isExternalServicesEnabled()) {
-
-            QueryParameters queryParameters = QueryParameters.query(uriInfo.getRequestUri().getQuery())
-                    .defaultOffset(0)
-                    .build();
-            return JPAUtils.queryEntities(em, Article.class, queryParameters);
-        }
-        return null;
+        QueryParameters queryParameters = QueryParameters.query(uriInfo.getRequestUri().getQuery())
+                .defaultOffset(0)
+                .build();
+        return JPAUtils.queryEntities(em, Article.class, queryParameters);
     }
 
     public List<Article> getArticlesFilter(UriInfo uriInfo) {
-
         QueryParameters queryParameters = QueryParameters.query(uriInfo.getRequestUri().getQuery()).defaultOffset(0)
                 .build();
 
@@ -68,72 +55,5 @@ public class ArticlesBean {
         }
 
         return article;
-    }
-
-    public Article createArticle(Article article) {
-
-        try {
-            beginTx();
-            em.persist(article);
-            commitTx();
-        } catch (Exception e) {
-            rollbackTx();
-        }
-
-        return article;
-    }
-
-    public Article putArticle(String articleId, Article article) {
-
-        Article c = em.find(Article.class, articleId);
-
-        if (c == null) {
-            return null;
-        }
-
-        try {
-            beginTx();
-            article.setId(c.getId());
-            article = em.merge(article);
-            commitTx();
-        } catch (Exception e) {
-            rollbackTx();
-        }
-
-        return article;
-    }
-
-    public boolean deleteArticle(String articleId) {
-
-        Article article = em.find(Article.class, articleId);
-
-        if (article != null) {
-            try {
-                beginTx();
-                em.remove(article);
-                commitTx();
-            } catch (Exception e) {
-                rollbackTx();
-            }
-        } else
-            return false;
-
-        return true;
-    }
-
-
-    private void beginTx() {
-        if (!em.getTransaction().isActive())
-            em.getTransaction().begin();
-    }
-
-    private void commitTx() {
-        if (em.getTransaction().isActive())
-            em.getTransaction().commit();
-    }
-
-    private void rollbackTx() {
-        if (em.getTransaction().isActive())
-            em.getTransaction().rollback();
     }
 }
