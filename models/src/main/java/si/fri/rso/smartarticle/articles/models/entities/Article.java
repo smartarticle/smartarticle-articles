@@ -24,6 +24,8 @@ public class Article {
 
     private String accountId;
 
+    private String collectionId;
+
 
     public Integer getId() {
         return id;
@@ -68,5 +70,13 @@ public class Article {
 
     public void setAccountId(String accountId) {
         this.accountId = accountId;
+    }
+
+    public String getCollectionId() {
+        return collectionId;
+    }
+
+    public void setCollectionId(String collectionId) {
+        this.collectionId = collectionId;
     }
 }
