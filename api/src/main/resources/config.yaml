@@ -20,9 +20,13 @@ kumuluzee:
   config:
     etcd:
       hosts: http://159.122.187.161:32428
-    discovery:
-      etcd:
-        hosts: http://159.122.187.161:32428
+  discovery:
+    etcd:
+      hosts: http://159.122.187.161:32428
+  metrics:
+    web-instrumentation:
+    - name: articles-endpoint
+      url-pattern: /v1/articles/*
 app-properties:
   article-services:
     enabled: true
