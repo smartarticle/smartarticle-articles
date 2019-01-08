@@ -13,7 +13,7 @@ spec:
         app: article
     spec:
       containers:
-      - image: ajugo/smartarticle-articles:0.
+      - image: ajugo/smartarticle-articles:0.6
         name: article
         imagePullPolicy: "Always"
         env:
