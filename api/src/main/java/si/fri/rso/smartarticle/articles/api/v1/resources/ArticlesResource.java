@@ -3,6 +3,7 @@ package si.fri.rso.smartarticle.articles.api.v1.resources;
 
 import com.kumuluz.ee.logs.cdi.Log;
 import si.fri.rso.smartarticle.articles.models.entities.Article;
+import si.fri.rso.smartarticle.articles.models.entities.Pubmed;
 import si.fri.rso.smartarticle.articles.services.beans.ArticlesBean;
 import si.fri.rso.smartarticle.articles.services.configuration.AppProperties;
 
@@ -73,6 +74,25 @@ public class ArticlesResource {
             }
             appProperties.setHealthy(true);
             return Response.status(Response.Status.OK).entity(article).build();
+        }
+        else{
+            appProperties.setHealthy(true);
+            return Response.ok().build();
+        }
+    }
+
+    @GET
+    @Path("/pubmed/{articleId}")
+    public Response getPubMed(@PathParam("articleId") String articleId) {
+        if (appProperties.isArticleServicesEnabled()) {
+            Pubmed pubmed = articlesBean.getPubmed(articleId);
+
+            if (pubmed == null) {
+                appProperties.setHealthy(true);
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
+            appProperties.setHealthy(true);
+            return Response.status(Response.Status.OK).entity(pubmed).build();
         }
         else{
             appProperties.setHealthy(true);

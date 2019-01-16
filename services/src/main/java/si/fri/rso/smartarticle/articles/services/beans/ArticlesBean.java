@@ -5,6 +5,7 @@ import com.kumuluz.ee.discovery.annotations.DiscoverService;
 import com.kumuluz.ee.rest.beans.QueryParameters;
 import com.kumuluz.ee.rest.utils.JPAUtils;
 import si.fri.rso.smartarticle.articles.models.entities.Article;
+import si.fri.rso.smartarticle.articles.models.entities.Pubmed;
 import si.fri.rso.smartarticle.articles.services.configuration.AppProperties;
 
 import javax.annotation.PostConstruct;
@@ -13,6 +14,8 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.NotFoundException;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
 import java.util.logging.Logger;
@@ -27,12 +30,14 @@ public class ArticlesBean {
     @Inject
     private EntityManager em;
 
+    private Client httpClient;
+
     @Inject
     private AppProperties appProperties;
 
 
     @PostConstruct
-    private void init() {}
+    private void init() { httpClient = ClientBuilder.newClient(); }
 
 
     public List<Article> getArticles(UriInfo uriInfo) {
@@ -59,5 +64,13 @@ public class ArticlesBean {
         }
 
         return article;
+    }
+
+    public Pubmed getPubmed(String id){
+        Pubmed pubmed = new Pubmed();
+        pubmed.setAbstraction(httpClient
+                .target("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&retmode=json&rettype=abstract&id=" + id)
+                .request().get().readEntity(String.class));
+        return pubmed;
     }
 }
